@@ -3,7 +3,7 @@ name: Build Expo APK
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build-android:
@@ -11,29 +11,29 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: "18"
 
-      - name: Install dependencies
+      - name: Install Expo CLI and dependencies
         run: |
           npm install -g expo-cli
           npm install
 
-      - name: Prebuild native project
+      - name: Prebuild native Android project
         run: |
           npx expo prebuild --platform android
 
-      - name: Build APK
+      - name: Build release APK
         run: |
           cd android
           ./gradlew assembleRelease
 
       - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: MyApp-APK
           path: android/app/build/outputs/apk/release/app-release.apk
